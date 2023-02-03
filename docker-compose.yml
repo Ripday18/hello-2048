@@ -1,0 +1,7 @@
+version: "3"
+services:
+  nginx2048:
+    build: .
+    image: hello-2048
+    ports:
+      - "8080:80"

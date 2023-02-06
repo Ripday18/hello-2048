@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('clone') {
+        stage('SCM') {
             steps {
                 git branch: 'main', url: 'https://github.com/Ripday18/hello-2048.git'
             }

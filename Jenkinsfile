@@ -15,7 +15,7 @@ pipeline {
         stage('Dockerlogin'){
            steps {
              withCredentials([string(credentialsId: 'github-token', variable: 'PAT')]) {
-                 sh 'echo $PAT | docker login ghcr.io -u Ripday18 --password-stdin && docker push ghcr.io/ripday18/hello-2048/hello-2048:v1'
+                 sh 'echo $PAT | docker login ghcr.io -u ripday18 --password-stdin && docker push ghcr.io/ripday18/hello-2048/hello-2048:v1'
             
              }
 

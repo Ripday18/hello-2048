@@ -14,8 +14,8 @@ pipeline {
             steps {
                 sh 'docker-compose build'
                 sh 'git tag 1.0.${BUILD_NUMBER}'
-                sshagent(['clave-sinensia']) {
-                        sh 'git push --tags'
+         sshagent(['clave-kevin']) {
+                   sh 'git push --tags'
                 }
                 sh "docker tag ghcr.io/ripday18/hello-2048/hello-2048:latest ghcr.io/ripday18/hello-2048:1.0.${BUILD_NUMBER}"
             }

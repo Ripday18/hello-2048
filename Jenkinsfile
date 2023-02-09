@@ -25,7 +25,7 @@ pipeline {
 	   steps {
 		sshagent(['ssh-amazon']) {
                    sh """
-                      ssh ec2-user@234.245.57.52 'docker pull ghcr.io/ripday18/hello-2048/hello-2048:v1 && docker run -td --rm -p 80:80 ghcr.io/ripday18/hello-2048/hello-2048:v1'
+                      ssh ec2-user@34.245.57.52 'docker pull ghcr.io/ripday18/hello-2048/hello-2048:v1 && docker run -td --rm -p 80:80 ghcr.io/ripday18/hello-2048/hello-2048:v1'
                    """
                 }
            }

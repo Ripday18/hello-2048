@@ -14,16 +14,16 @@ pipeline {
             steps {
                 sh 'docker-compose build'
                 sh 'git tag 1.0.${BUILD_NUMBER}'
-		sshagent(['clave-kevin']) {
+		sshagent(['clave-sinensia']) {
                 	sh 'git push --tags'
                 }
-                sh "docker tag ghcr.io/angelocho/hello-amazon/hello-amazon:latest ghcr.io/angelocho/hello-amazon:1.0.${BUILD_NUMBER}"
+                sh "docker tag ghcr.io/ripday18/hello-2048/hello-2048:latest ghcr.io/ripday18/hello-2048:1.0.${BUILD_NUMBER}"
             }
         }
         stage('Dockerlogin'){
            steps {
              withCredentials([string(credentialsId: 'github-token', variable: 'PAT')]) {
-                 sh 'echo $PAT | docker login ghcr.io -u angelocho --password-stdin && docker-compose push && docker push ghcr.io/angelocho/hello-amazon:1.0.${BUILD_NUMBER}'
+                 sh 'echo $PAT | docker login ghcr.io -u ripday18 --password-stdin && docker push ghcr.io/ripday18/hello-2048:1.0.${BUILD_NUMBER}'
             
              }
 
@@ -33,7 +33,7 @@ pipeline {
 	   steps {
 		sshagent(['ssh-amazon']) {
                    sh """
-                      ssh -o "StrictHostKeyChecking no" ec2-user@ec2-34-244-177-29.eu-west-1.compute.amazonaws.com 'docker-compose pull && docker-compose up -d '
+                      ssh -o "StrictHostKeyChecking no" ec2-user@34.245.57.52 'docker-compose pull && docker-compose up -d '
                    """
                 }
            }

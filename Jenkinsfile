@@ -10,7 +10,11 @@ pipeline {
         stage('building') {
             steps {
                 sh 'docker-compose build'
-            }
+                sh 'git tag 1.0.${BUILD_NUMBER}'
+		sshagent(['ssh-amazon']) {
+                	sh 'git push --tags'  
+                }
+                sh "docker tag ghcr.io/ripday18/hello-2048/hello-amazon:latest ghcr.io/ripday18/hello-amazon:1.0.${BUILD_NUMBER}"
         }
         stage('Dockerlogin'){
            steps {

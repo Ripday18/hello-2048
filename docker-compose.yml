@@ -2,6 +2,6 @@ version: "3"
 services:
   nginx:
     build: .
-    image: ghcr.io/qebyn/hello-2048/nginx2048:${VERSION_TAG:-latest}
+    image: ghcr.io/qebyn/hello-2048/nginx2048:latest
     ports:
       - 8080:80

@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh 'docker-compose build'
                 sh 'git tag 1.0.${BUILD_NUMBER}'
-                sshagent(['github-token']) {
+		sshagent(['clave-kevin']) {
                    sh 'git push --tags'
                 }
                 sh "docker tag ghcr.io/qebyn/hello-2048/hello-2048:latest ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}"
@@ -23,7 +23,7 @@ pipeline {
         stage('Dockerlogin'){
            steps {
              withCredentials([string(credentialsId: 'github-token', variable: 'PAT')]) {
-                 sh 'echo $PAT | docker login ghcr.io -u qebyn --password-stdin && docker push ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}'
+                 sh 'echo $PAT | docker login ghcr.io -u qebyn --password-stdin && docker-compose push && docker push ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}'
 
              }
 
@@ -41,5 +41,6 @@ pipeline {
 
     }
 }
+
 
 

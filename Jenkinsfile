@@ -13,7 +13,7 @@ pipeline {
         stage('building') {
             steps {
                 sh 'docker-compose build'
-                sh 'git tag 1.0.${BUILD_NUMBER}'
+                sh 'git tag 1.1.${BUILD_NUMBER}'
 		sshagent(['github_access_ssh']) {
                 	sh 'git push --tags'
                 }

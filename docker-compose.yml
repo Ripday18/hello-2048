@@ -1,7 +1,7 @@
 version: "3"
 services:
-  httpd:
+  nginx:
     build: .
-    image: ghcr.io/qebyn/hello-2048/hello-2048/hello2048:v1
+    image: ghcr.io/qebyn/hello-2048/nginx2048:${VERSION_TAG:-latest}
     ports:
-      - "80:80"
+      - 8080:80

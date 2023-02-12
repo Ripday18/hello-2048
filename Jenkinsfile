@@ -17,7 +17,7 @@ pipeline {
 		sshagent(['github-tokenqebyn']) {
                 	sh 'git push --tags'
                 }
-                sh "docker tag ghcr.io/qebyn/hello-2048/hello-2048:latest ghcr.io/qebyn/hello-amazon:1.0.${BUILD_NUMBER}"
+                sh "docker tag ghcr.io/qebyn/hello-2048/hello-2048:latest ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}"
             }
         }
         stage('Dockerlogin'){

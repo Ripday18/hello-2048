@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh 'docker-compose build'
                 sh 'git tag 1.0.${BUILD_NUMBER} || echo "Tag 1.0.${BUILD_NUMBER} already exists"'
-		sshagent(['github_access_ssh']) {
+		sshagent(['github-tokenqebyn']) {
                 	sh 'git push --tags'
                 }
                 sh "docker tag ghcr.io/qebyn/hello-2048/hello-2048:latest ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}"

@@ -1,36 +1,44 @@
-pipeline {
+pipipeline {
     agent any
+    options{
+        timestamps()
+        ansiColor('xterm')
+    }
     stages {
-        stage('Git Login'){
+	stage('TestingDocker') {
             steps {
-                withCredentials([string(credentialsId: 'github-tokenqebyn', variable: 'PAT')]) {
-                    sh 'echo $PAT | docker login ghcr.io -u qebyn --password-stdin'
-                }
+                sh 'docker-compose config'
             }
         }
-        stage('Image generation'){
+        stage('building') {
             steps {
                 sh 'docker-compose build'
-                sh 'git tag -d 1.0.${BUILD_NUMBER}'
-                sshagent(['github_access_ssh']) {
-                    sh 'git push git@github.com:qebyn/hello-2048.git :refs/tags/1.0.${BUILD_NUMBER}'
+                sh 'git tag 1.0.${BUILD_NUMBER}'
+		sshagent(['github_access_ssh']) {
+                	sh 'git push --tags'
                 }
-                sh 'git tag 1.1.${BUILD_NUMBER}'
-                sshagent(['github_access_ssh']) {
-                    sh 'git push git@github.com:qebyn/hello-2048.git --tags'
-                }
-                sh 'docker-compose push'
-                sh 'VERSION_TAG=1.1.${BUILD_NUMBER} docker-compose push'
+                sh "docker tag ghcr.io/qebyn/hello-2048/nginx2048:latest ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}"
             }
         }
-        stage('AWS deploy') {
-            steps {
-                sshagent(['ssh_amazon']) {
-                    sh 'ssh ec2-user@3.253.61.205 docker pull ghcr.io/hello-2048/nginx2048:1.1.${BUILD_NUMBER}'
-                    sh 'ssh ec2-user@3.253.61.205 docker run -dt --rm -p 80:80 ghcr.io/qebyn/hello-2048/nginx2048:1.1.${BUILD_NUMBER}'
-                }
-            }
+        stage('Dockerlogin'){
+           steps {
+             withCredentials([string(credentialsId: 'github-tokenqebyn', variable: 'PAT')]) {
+                 sh 'echo $PAT | docker login ghcr.io -u qebyn --password-stdin && docker-compose push && docker push ghcr.io/qebyn/hello-2048:1.0.${BUILD_NUMBER}'
+            
+             }
+
+           }
         }
+        stage('ConexionAWS'){
+	   steps {
+		sshagent(['ssh-amazon']) {
+                   sh """
+                      ssh -o "StrictHostKeyChecking no" ec2-3-253-61-205.eu-west-1.compute.amazonaws.com 'docker-compose pull && docker-compose up -d '
+                   """
+                }
+           }
+	}
+
     }
 }
 

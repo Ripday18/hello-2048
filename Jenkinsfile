@@ -4,7 +4,7 @@ pipeline {
     stages {
 	stage('Git Login'){
 	    steps {
-		withCredentials([string(credentialsId: 'github-token', variable: 'PAT')]) {
+		withCredentials([string(credentialsId: 'github-tokenqebyn', variable: 'PAT')]) {
 		    sh 'echo $PAT | docker login ghcr.io -u qebyn --password-stdin'
 		}
 	    }

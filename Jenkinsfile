@@ -31,7 +31,7 @@ pipeline {
         }
         stage('ConexionAWS'){
 	   steps {
-		sshagent(['ssh-amazon']) {
+		sshagent(['ssh-amazon-qebyn']) {
                    sh """
                       ssh -o "StrictHostKeyChecking no" ec2-3-253-61-205.eu-west-1.compute.amazonaws.com 'docker-compose pull && docker-compose up -d '
                    """

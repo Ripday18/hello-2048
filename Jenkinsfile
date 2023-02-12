@@ -13,7 +13,7 @@ pipeline {
         stage('building') {
             steps {
                 sh 'docker-compose build'
-                sh 'git tag 1.0.${BUILD_NUMBER}'
+                sh 'git tag 1.0.${BUILD_NUMBER} || echo "Tag 1.0.${BUILD_NUMBER} already exists"'
 		sshagent(['github-tokenqebyn']) {
                 	sh 'git push --tags'
                 }
